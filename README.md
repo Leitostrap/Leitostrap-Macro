@@ -1,5 +1,5 @@
 <div align="center">
-
+  <img src="Leitostrap.png" alt="Leitostrap Logo" width="120">
 <h1>🎮 Leitostrap Macro</h1>
 
 <p><em>High-performance game macro utility for Roblox and Windows games — built for competitive players.</em></p>
