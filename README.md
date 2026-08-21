@@ -4,16 +4,17 @@
 
 <p><em>High-performance game macro utility for Roblox and Windows games — built for competitive players.</em></p>
 
-<img src="LeitostrapMacroPreview.png" alt="Leitostrap Macro Preview" width="750"/>
-
 <br/>
-
 
 ![Version](https://img.shields.io/badge/version-V1.0.0%20Beta-white?style=for-the-badge&labelColor=111111)
 ![Platform](https://img.shields.io/badge/platform-Windows-white?style=for-the-badge&labelColor=111111)
 ![Framework](https://img.shields.io/badge/.NET-6.0-white?style=for-the-badge&labelColor=111111)
 
 </div>
+
+<br/>
+
+<img src="LeitostrapMacroPreview.png" alt="Leitostrap Macro Preview" width="750"/>
 
 ---
 
