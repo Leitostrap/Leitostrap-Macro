@@ -1,0 +1,20 @@
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\bin\Release\net6.0-windows\win-x64\Leitostrap Macro V1.0.0 Beta.exe
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\bin\Release\net6.0-windows\win-x64\Leitostrap Macro V1.0.0 Beta.deps.json
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\bin\Release\net6.0-windows\win-x64\Leitostrap Macro V1.0.0 Beta.runtimeconfig.json
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\bin\Release\net6.0-windows\win-x64\Leitostrap Macro V1.0.0 Beta.dll
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\bin\Release\net6.0-windows\win-x64\Leitostrap Macro V1.0.0 Beta.pdb
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\obj\Release\net6.0-windows\win-x64\MainWindow.baml
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\obj\Release\net6.0-windows\win-x64\App.baml
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\obj\Release\net6.0-windows\win-x64\MainWindow.g.cs
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\obj\Release\net6.0-windows\win-x64\App.g.cs
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\obj\Release\net6.0-windows\win-x64\Leitostrap Macro V1.0.0 Beta_MarkupCompile.cache
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\obj\Release\net6.0-windows\win-x64\Leitostrap Macro V1.0.0 Beta.g.resources
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\obj\Release\net6.0-windows\win-x64\Leitostrap Macro V1.0.0 Beta.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\obj\Release\net6.0-windows\win-x64\Leitostrap Macro V1.0.0 Beta.AssemblyInfoInputs.cache
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\obj\Release\net6.0-windows\win-x64\Leitostrap Macro V1.0.0 Beta.AssemblyInfo.cs
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\obj\Release\net6.0-windows\win-x64\Leitostrap Macro V1.0.0 Beta.csproj.CoreCompileInputs.cache
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\obj\Release\net6.0-windows\win-x64\Leitostrap Macro V1.0.0 Beta.dll
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\obj\Release\net6.0-windows\win-x64\refint\Leitostrap Macro V1.0.0 Beta.dll
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\obj\Release\net6.0-windows\win-x64\Leitostrap Macro V1.0.0 Beta.pdb
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\obj\Release\net6.0-windows\win-x64\Leitostrap Macro V1.0.0 Beta.genruntimeconfig.cache
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\obj\Release\net6.0-windows\win-x64\ref\Leitostrap Macro V1.0.0 Beta.dll

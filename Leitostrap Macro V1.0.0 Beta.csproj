@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>Leitostrap Macro V1.0.0 Beta</AssemblyName>
+    <RootNamespace>LeitostrapMacro</RootNamespace>
+    <ApplicationIcon>Leitostrap.ico</ApplicationIcon>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>false</SelfContained>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Leitostrap.ico" />
+    <Resource Include="Leitostrap.png" />
+    <Resource Include="resources\tsb.png" />
+    <Resource Include="resources\Rivals.png" />
+    <Resource Include="resources\BloxFruits.png" />
+  </ItemGroup>
+
+</Project>

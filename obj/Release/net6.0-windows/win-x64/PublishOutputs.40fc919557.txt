@@ -1,0 +1,2 @@
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\bin\Release\net6.0-windows\win-x64\publish\Leitostrap Macro V1.0.0 Beta.pdb
+C:\Users\josey\Desktop\Leitostrap Project\Leitostrap Macro\Leitostrap Macro V1.0.0 Beta\bin\Release\net6.0-windows\win-x64\publish\Leitostrap Macro V1.0.0 Beta.exe

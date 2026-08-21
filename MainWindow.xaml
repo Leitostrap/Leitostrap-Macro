@@ -1,0 +1,1654 @@
+<Window x:Class="LeitostrapMacro.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Leitostrap Macro"
+        Width="920" Height="640"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Topmost="True"
+        Icon="Leitostrap.ico"
+        PreviewKeyDown="PreviewKeyDownHandler">
+    <Window.Resources>
+        <Storyboard x:Key="FadeIn">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.3">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </Window.Resources>
+    <Border x:Name="RootBorder" CornerRadius="0" Background="#080808" BorderBrush="#181818" BorderThickness="1">
+        
+        <Grid ClipToBounds="False">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Canvas x:Name="ThemeCanvas" IsHitTestVisible="False" Background="Transparent" Grid.RowSpan="2"/>
+
+            <!-- ═══ TITLE BAR ═══ -->
+            <Border Grid.Row="0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" Background="#080808">
+                <Grid Margin="22,0,16,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="Leitostrap.png" Width="20" Height="20" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        <StackPanel Orientation="Horizontal" Margin="10,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="LEITO" Foreground="White" FontSize="13" FontWeight="Bold" FontFamily="Segoe UI"/>
+                            <TextBlock Text="STRAP" Foreground="#FF333333" FontSize="13" FontWeight="Bold" FontFamily="Segoe UI"/>
+                        </StackPanel>
+                        <Border Background="#FF151515" CornerRadius="6" Padding="7,2" Margin="12,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="v1.0.0 beta" Foreground="#FF444444" FontSize="9" FontWeight="SemiBold"/>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button x:Name="BtnMinimize" Width="30" Height="28" Background="Transparent" BorderThickness="0"
+                                Cursor="Hand" Click="BtnMinimize_Click" Template="{StaticResource NoneBtn}">
+                            <TextBlock Text="&#x2500;" Foreground="#FF555555" FontSize="13" FontWeight="Bold"/>
+                        </Button>
+                        <Button x:Name="BtnMaximize" Width="30" Height="28" Background="Transparent" BorderThickness="0"
+                                Cursor="Hand" Click="BtnMaximize_Click" Margin="2,0,0,0" Template="{StaticResource NoneBtn}">
+                            <TextBlock Text="&#x25A1;" FontFamily="Segoe UI Symbol" Foreground="#FF555555" FontSize="11" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Button>
+                        <Button x:Name="BtnClose" Width="30" Height="28" Background="Transparent" BorderThickness="0"
+                                Cursor="Hand" Click="BtnClose_Click" Margin="2,0,0,0" Template="{StaticResource NoneBtn}">
+                            <TextBlock Text="&#x2715;" Foreground="#FF555555" FontSize="11"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- ═══ GAME SELECTION ═══ -->
+            <Grid x:Name="GameSelectionScreen" Grid.Row="1" Opacity="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Margin="40,34,40,0">
+                    <TextBlock Text="Select Platform" Foreground="#FF888888" FontSize="11" FontWeight="SemiBold" FontFamily="Segoe UI" />
+                    <TextBlock Text="Choose a category to find macros" Foreground="#FF222222" FontSize="11" FontFamily="Segoe UI" Margin="0,4,0,0"/>
+                </StackPanel>
+
+                <ScrollViewer Grid.Row="1" Margin="20,24,20,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Style="{StaticResource ModernScrollViewer}">
+                    <StackPanel Margin="20,0,20,20">
+                        <!-- UNIVERSAL SECTION -->
+                        <TextBlock Text="Universal" Foreground="#FF555555" FontSize="12" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,12"/>
+                        <Border x:Name="GameCard_Universal" Cursor="Hand"
+                                Background="#0E0E0E" CornerRadius="18" BorderBrush="#161616" BorderThickness="1"
+                                MouseLeftButtonUp="GameCard_Universal_Click" HorizontalAlignment="Stretch"
+                                Height="100" Padding="0" Margin="0,0,0,24">
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform x:Name="CardScaleUniv" ScaleX="1" ScaleY="1" CenterX="0.5" CenterY="0.5"/>
+                                </TransformGroup>
+                            </Border.RenderTransform>
+                            <Border.Triggers>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="CardScaleUniv" Storyboard.TargetProperty="ScaleX" To="1.015" Duration="0:0:0.2"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction></DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetName="CardScaleUniv" Storyboard.TargetProperty="ScaleY" To="1.015" Duration="0:0:0.2"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction></DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="CardScaleUniv" Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.2"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction></DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetName="CardScaleUniv" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.2"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction></DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Border.Triggers>
+                            <Grid Margin="22,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Width="58" Height="58" CornerRadius="16" Background="#111111" ClipToBounds="True" VerticalAlignment="Center" BorderBrush="#1A1A1A" BorderThickness="1">
+                                    <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel Grid.Column="1" Margin="22,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock Text="Universal Macros" Foreground="White" FontSize="16" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                    <TextBlock Text="AutoClicker, AutoJump, and more..." Foreground="#FF333333" FontSize="11" FontFamily="Segoe UI" Margin="0,5,0,0"/>
+                                </StackPanel>
+                                <Border Grid.Column="2" VerticalAlignment="Center" Background="#141414" CornerRadius="10" Padding="18,8" BorderBrush="#1C1C1C" BorderThickness="1">
+                                    <TextBlock Text="OPEN" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!-- ROBLOX SECTION -->
+                        <TextBlock Text="Roblox" Foreground="#FF555555" FontSize="12" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,12"/>
+                        <UniformGrid Columns="3" Margin="0,0,0,16">
+                        
+                        <Border x:Name="GameCard_TSB" Cursor="Hand"
+                                Background="#0E0E0E" CornerRadius="18" BorderBrush="#161616" BorderThickness="1"
+                                MouseLeftButtonUp="GameCard_TSB_Click" 
+                                Height="150" Padding="0" Margin="0,0,12,12">
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform x:Name="CardScale" ScaleX="1" ScaleY="1" CenterX="0.5" CenterY="0.5"/>
+                                </TransformGroup>
+                            </Border.RenderTransform>
+                            <Border.Triggers>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="CardScale" Storyboard.TargetProperty="ScaleX" To="1.015" Duration="0:0:0.2"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction></DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetName="CardScale" Storyboard.TargetProperty="ScaleY" To="1.015" Duration="0:0:0.2"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction></DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="CardScale" Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.2"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction></DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetName="CardScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.2"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction></DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Border.Triggers>
+                            <StackPanel Margin="16" HorizontalAlignment="Center">
+                                
+                                <Border Width="64" Height="64" CornerRadius="16" Background="#111111" ClipToBounds="True" HorizontalAlignment="Center" BorderBrush="#1A1A1A" BorderThickness="1">
+                                    <Image Source="resources/tsb.png" Width="64" Height="64" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Border>
+                                <StackPanel Margin="0,12,0,0" HorizontalAlignment="Center">
+                                    <TextBlock Text="TSB" HorizontalAlignment="Center" Foreground="White" FontSize="16" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                    <TextBlock Text="Best macros for The Strongest Battlegrounds" Foreground="#FF333333" HorizontalAlignment="Center" TextAlignment="Center" FontSize="11" FontFamily="Segoe UI" Margin="0,5,0,0"/>
+                                </StackPanel>
+                                <Border Background="#141414" CornerRadius="8" Padding="24,6" BorderBrush="#1C1C1C" BorderThickness="1" HorizontalAlignment="Center" Margin="0,14,0,0">
+                                    <TextBlock Text="OPEN" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+
+                        <Border x:Name="GameCard_Rivals" Cursor="Hand"
+                                Background="#0E0E0E" CornerRadius="18" BorderBrush="#161616" BorderThickness="1"
+                                MouseLeftButtonUp="GameCard_Rivals_Click" 
+                                Height="150" Padding="0" Margin="0,0,12,12">
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform x:Name="CardScaleRivals" ScaleX="1" ScaleY="1" CenterX="0.5" CenterY="0.5"/>
+                                </TransformGroup>
+                            </Border.RenderTransform>
+                            <Border.Triggers>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="CardScaleRivals" Storyboard.TargetProperty="ScaleX" To="1.015" Duration="0:0:0.2"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction></DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetName="CardScaleRivals" Storyboard.TargetProperty="ScaleY" To="1.015" Duration="0:0:0.2"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction></DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="CardScaleRivals" Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.2"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction></DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetName="CardScaleRivals" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.2"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction></DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Border.Triggers>
+                            <StackPanel Margin="16" HorizontalAlignment="Center">
+                                
+                                <Border Width="64" Height="64" CornerRadius="16" Background="#111111" ClipToBounds="True" HorizontalAlignment="Center" BorderBrush="#1A1A1A" BorderThickness="1">
+                                    <Image Source="resources/Rivals.png" Width="64" Height="64" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Border>
+                                <StackPanel Margin="0,12,0,0" HorizontalAlignment="Center">
+                                    <TextBlock Text="Rivals" HorizontalAlignment="Center" Foreground="White" FontSize="16" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                    <TextBlock Text="Best macros for Rivals" Foreground="#FF333333" HorizontalAlignment="Center" TextAlignment="Center" FontSize="11" FontFamily="Segoe UI" Margin="0,5,0,0"/>
+                                </StackPanel>
+                                <Border Background="#141414" CornerRadius="8" Padding="24,6" BorderBrush="#1C1C1C" BorderThickness="1" HorizontalAlignment="Center" Margin="0,14,0,0">
+                                    <TextBlock Text="OPEN" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+
+                        <Border x:Name="GameCard_BloxFruits" Cursor="Hand"
+                                Background="#0E0E0E" CornerRadius="18" BorderBrush="#161616" BorderThickness="1"
+                                MouseLeftButtonUp="GameCard_BloxFruits_Click" 
+                                Height="150" Padding="0" Margin="0,0,12,12">
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform x:Name="CardScaleBlox" ScaleX="1" ScaleY="1" CenterX="0.5" CenterY="0.5"/>
+                                </TransformGroup>
+                            </Border.RenderTransform>
+                            <Border.Triggers>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="CardScaleBlox" Storyboard.TargetProperty="ScaleX" To="1.015" Duration="0:0:0.2"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction></DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetName="CardScaleBlox" Storyboard.TargetProperty="ScaleY" To="1.015" Duration="0:0:0.2"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction></DoubleAnimation>
+                                            <ColorAnimation Storyboard.TargetName="CardBloxBorder" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" To="#222222" Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="CardScaleBlox" Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.2"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction></DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetName="CardScaleBlox" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.2"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction></DoubleAnimation>
+                                            <ColorAnimation Storyboard.TargetName="CardBloxBorder" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" To="#161616" Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Border.Triggers>
+                            <Border x:Name="CardBloxBorder" CornerRadius="18" BorderBrush="#161616" BorderThickness="1" Background="Transparent">
+                                <StackPanel Margin="16" HorizontalAlignment="Center">
+                                    
+                                    <Border Width="64" Height="64" CornerRadius="16" Background="#111111" ClipToBounds="True" HorizontalAlignment="Center" BorderBrush="#1A1A1A" BorderThickness="1">
+                                        <Image Source="resources/BloxFruits.png" Width="64" Height="64" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Border>
+                                    <StackPanel Margin="0,12,0,0" HorizontalAlignment="Center">
+                                        <TextBlock Text="Blox Fruits" HorizontalAlignment="Center" Foreground="White" FontSize="16" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock Text="FOV Changer and more for Blox Fruits" Foreground="#FF333333" HorizontalAlignment="Center" TextAlignment="Center" FontSize="11" FontFamily="Segoe UI" Margin="0,5,0,0"/>
+                                    </StackPanel>
+                                    <Border Background="#141414" CornerRadius="8" Padding="24,6" BorderBrush="#1C1C1C" BorderThickness="1" HorizontalAlignment="Center" Margin="0,14,0,0">
+                                        <TextBlock Text="OPEN" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </Border>
+
+                                                </UniformGrid>
+                        <TextBlock Text="More games coming soon..." Foreground="#FF1A1A1A" FontSize="10" FontFamily="Segoe UI" HorizontalAlignment="Center" Margin="0,10,0,26"/>
+                    </StackPanel>
+
+                </ScrollViewer>
+
+                <!-- SETTINGS AND ABOUT -->
+                <Grid Grid.Row="2" Margin="40,0,40,30">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button x:Name="BtnSettings" Template="{StaticResource PillBtn}" Padding="24,10" Margin="0,0,10,0" Click="BtnSettings_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" Foreground="White" FontSize="11" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="SETTINGS" Foreground="White" FontSize="10" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="BtnAbout" Template="{StaticResource PillBtn}" Padding="24,10" Click="BtnAbout_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" Foreground="White" FontSize="11" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="ABOUT" Foreground="White" FontSize="10" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+
+            <!-- ═══ MACRO CENTER ═══ -->
+
+            <!-- ═══ MACRO CENTER ═══ -->
+            <Grid x:Name="MacroCenterScreen" Grid.Row="1" Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- SIDEBAR -->
+                <Border Grid.Column="0" Background="#0A0A0A">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Margin="22,22,22,0">
+                            <Button x:Name="BtnBack" Width="32" Height="32" Background="#111111" BorderThickness="0"
+                                    Cursor="Hand" Click="BtnBack_Click" Padding="0"
+                                    HorizontalAlignment="Left" BorderBrush="#1A1A1A">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="bg" Background="{TemplateBinding Background}" CornerRadius="10"
+                                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                            <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                                       Foreground="#FF555555" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="bg" Property="Background" Value="#1A1A1A"/>
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
+
+                        <!-- TABS -->
+                        <Grid Grid.Row="1" Margin="0,8,0,0">
+                            
+                            <StackPanel>
+                        <!-- TAB: HUMBLED TWISTED -->
+                        <Border x:Name="TabHumbled" Margin="16,4,16,4" Padding="12,12" Cursor="Hand"
+                                Background="#111111" CornerRadius="8" BorderBrush="#1A1A1A" BorderThickness="1"
+                                MouseLeftButtonDown="TabHumbled_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Grid.Column="1" Text="Humbled Twisted" Foreground="#FF777777" FontSize="12.5" FontWeight="SemiBold" FontFamily="Segoe UI" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <Border Grid.Column="2" Background="#1A1A1A" CornerRadius="6" Padding="6,2">
+                                    <TextBlock x:Name="TabStatus" Text="OFF" Foreground="#FF444444" FontSize="8" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!-- TAB: INSTANT LEE -->
+                        <Border x:Name="TabInstantLee" Margin="16,4,16,4" Padding="12,12" Cursor="Hand"
+                                Background="Transparent" CornerRadius="8" BorderBrush="Transparent" BorderThickness="1"
+                                MouseLeftButtonDown="TabInstantLee_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Grid.Column="1" Text="Instant Lee" Foreground="#FF555555" FontSize="12.5" FontWeight="SemiBold" FontFamily="Segoe UI" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <Border Grid.Column="2" Background="#1A1A1A" CornerRadius="6" Padding="6,2">
+                                    <TextBlock x:Name="TabInstantLeeStatus" Text="OFF" Foreground="#FF444444" FontSize="8" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!-- TAB: LETHAL DASH -->
+                        <Border x:Name="TabLethalDash" Margin="16,4,16,4" Padding="12,12" Cursor="Hand"
+                                Background="Transparent" CornerRadius="8" BorderBrush="Transparent" BorderThickness="1"
+                                MouseLeftButtonDown="TabLethalDash_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Grid.Column="1" Text="Lethal Dash" Foreground="#FF555555" FontSize="12.5" FontWeight="SemiBold" FontFamily="Segoe UI" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <Border Grid.Column="2" Background="#1A1A1A" CornerRadius="6" Padding="6,2">
+                                    <TextBlock x:Name="TabLethalDashStatus" Text="OFF" Foreground="#FF444444" FontSize="8" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!-- TAB: BUNNY HOP -->
+                        <Border x:Name="TabBunnyHop" Margin="16,4,16,4" Padding="12,12" Cursor="Hand" Visibility="Collapsed"
+                                Background="Transparent" CornerRadius="8" BorderBrush="Transparent" BorderThickness="1"
+                                MouseLeftButtonDown="TabBunnyHop_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Grid.Column="1" Text="Bunny Hop" Foreground="#FF555555" FontSize="12.5" FontWeight="SemiBold" FontFamily="Segoe UI" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <Border Grid.Column="2" Background="#1A1A1A" CornerRadius="6" Padding="6,2">
+                                    <TextBlock x:Name="TabBunnyHopStatus" Text="OFF" Foreground="#FF444444" FontSize="8" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!-- TAB: PILLAR SLIDE -->
+                        <Border x:Name="TabPillarSlide" Margin="16,4,16,4" Padding="12,12" Cursor="Hand" Visibility="Collapsed"
+                                Background="Transparent" CornerRadius="8" BorderBrush="Transparent" BorderThickness="1"
+                                MouseLeftButtonDown="TabPillarSlide_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Grid.Column="1" Text="Pillar Slide" Foreground="#FF555555" FontSize="12.5" FontWeight="SemiBold" FontFamily="Segoe UI" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <Border Grid.Column="2" Background="#1A1A1A" CornerRadius="6" Padding="6,2">
+                                    <TextBlock x:Name="TabPillarSlideStatus" Text="OFF" Foreground="#FF444444" FontSize="8" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+                        
+                        <!-- TAB: AUTOCLICKER -->
+                        <Border x:Name="TabAutoClicker" Margin="16,4,16,4" Padding="12,12" Cursor="Hand" Visibility="Collapsed"
+                                Background="Transparent" CornerRadius="8" BorderBrush="Transparent" BorderThickness="1"
+                                MouseLeftButtonDown="TabAutoClicker_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Grid.Column="1" Text="AutoClicker" Foreground="#FF555555" FontSize="12.5" FontWeight="SemiBold" FontFamily="Segoe UI" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <Border Grid.Column="2" Background="#1A1A1A" CornerRadius="6" Padding="6,2">
+                                    <TextBlock x:Name="TabAutoClickerStatus" Text="OFF" Foreground="#FF444444" FontSize="8" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!-- TAB: AUTOJUMP -->
+                        <Border x:Name="TabAutoJump" Margin="16,4,16,4" Padding="12,12" Cursor="Hand" Visibility="Collapsed"
+                                Background="Transparent" CornerRadius="8" BorderBrush="Transparent" BorderThickness="1"
+                                MouseLeftButtonDown="TabAutoJump_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Grid.Column="1" Text="AutoJump" Foreground="#FF555555" FontSize="12.5" FontWeight="SemiBold" FontFamily="Segoe UI" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <Border Grid.Column="2" Background="#1A1A1A" CornerRadius="6" Padding="6,2">
+                                    <TextBlock x:Name="TabAutoJumpStatus" Text="OFF" Foreground="#FF444444" FontSize="8" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!-- TAB: AUTOCOMBO -->
+                        <Border x:Name="TabAutoCombo" Margin="16,4,16,4" Padding="12,12" Cursor="Hand" Visibility="Collapsed"
+                                Background="Transparent" CornerRadius="8" BorderBrush="Transparent" BorderThickness="1"
+                                MouseLeftButtonDown="TabAutoCombo_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="1" Text="Auto Combo" Foreground="#FF555555" FontSize="12.5" FontWeight="SemiBold" FontFamily="Segoe UI" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <Border Grid.Column="2" Background="#1A1A1A" CornerRadius="6" Padding="6,2">
+                                    <TextBlock x:Name="TabAutoComboStatus" Text="OFF" Foreground="#FF444444" FontSize="8" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!-- TAB: FOV CHANGER -->
+                        <Border x:Name="TabFOVChanger" Margin="16,4,16,4" Padding="12,12" Cursor="Hand" Visibility="Collapsed"
+                                Background="Transparent" CornerRadius="8" BorderBrush="Transparent" BorderThickness="1"
+                                MouseLeftButtonDown="TabFOVChanger_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Grid.Column="1" Text="FOV Changer" Foreground="#FF555555" FontSize="12.5" FontWeight="SemiBold" FontFamily="Segoe UI" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <Border Grid.Column="2" Background="#1A1A1A" CornerRadius="6" Padding="6,2">
+                                    <TextBlock Text="OFF" Foreground="#FF444444" FontSize="8" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+                        </StackPanel>
+                        </Grid>
+    
+                        <StackPanel Grid.Row="3" Margin="16,0,16,18">
+                            <Border Background="#0F0F0F" CornerRadius="14" Padding="16,13" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <StackPanel>
+                                        <TextBlock x:Name="StatusText" Text="INACTIVE" Foreground="#FF333333" FontSize="10" FontWeight="Bold" FontFamily="Segoe UI" />
+                                        <TextBlock x:Name="MacroStatusText" Text="Ready to launch" Foreground="#FF222222" FontSize="9" FontFamily="Segoe UI" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                    <Border x:Name="StatusDot" Width="8" Height="8" CornerRadius="4" Background="#FF222222" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- CONTENT -->
+                <Grid Grid.Column="1">
+                    <Grid.Background>
+                        <SolidColorBrush Color="#0A0A0A"/>
+                    </Grid.Background>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Style="{StaticResource ModernScrollViewer}">
+                        <StackPanel>
+
+                        <!-- HUMBLED TWISTED PANEL -->
+                        <StackPanel x:Name="PanelHumbled" Margin="38,30,38,34">
+
+                            <!-- HEADER -->
+                            <TextBlock Text="HUMBLED TWISTED" Foreground="White" FontSize="22" FontWeight="Bold" FontFamily="Segoe UI"/>
+                            <TextBlock Text="Swordstrap Hub macro configuration" Foreground="#FF333333" FontSize="12" FontFamily="Segoe UI" Margin="0,5,0,0"/>
+                            <Border Background="#FF151515" Height="1" Margin="0,22,0,22"/>
+
+                            <!-- SECTION: MACRO -->
+                            <TextBlock Text="MACRO" Foreground="#FF222222" FontSize="9.5" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,12"/>
+
+                            <!-- Toggle -->
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Enable / Disable" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="MacroEnabledText" Text="Status: OFF" Foreground="#FF333333" FontSize="11" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="ToggleMacroSwitch" Grid.Column="1" VerticalAlignment="Center"
+                                              Style="{StaticResource ToggleSwitch}"
+                                              Checked="ToggleMacroSwitch_Checked" Unchecked="ToggleMacroSwitch_Unchecked"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Combo Key -->
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,22" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Combo Key" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="ComboKeyDisplay" Text="E" Foreground="#FF333333" FontSize="11" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+                                    </StackPanel>
+                                    <Button x:Name="BtnSetComboKey" Grid.Column="1" VerticalAlignment="Center" Click="BtnSetComboKey_Click" Template="{StaticResource PillBtn}">
+                                        <TextBlock Text="SET" FontSize="10" FontWeight="SemiBold"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+
+                            <!-- SECTION: PARAMETERS -->
+                            <TextBlock Text="PARAMETERS" Foreground="#FF222222" FontSize="9.5" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,12"/>
+
+                            <!-- Sensitivity -->
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <TextBlock Text="Roblox Sensitivity" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="SensitivityValue" Text="0.52" Foreground="#FF444444" FontSize="14" FontWeight="Bold" FontFamily="Segoe UI" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                    <Slider x:Name="SensitivitySlider" Minimum="0.1" Maximum="2.0" Value="0.52" TickFrequency="0.01" IsSnapToTickEnabled="True" Margin="0,0,0,2" ValueChanged="SensitivitySlider_ValueChanged"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Loop -->
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,22" BorderBrush="#161616" BorderThickness="1">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <TextBlock Text="Steps Smooth" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="LoopValue" Text="5" Foreground="#FF444444" FontSize="14" FontWeight="Bold" FontFamily="Segoe UI" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                    <Slider x:Name="LoopSlider" Minimum="1" Maximum="10" Value="5" TickFrequency="1" IsSnapToTickEnabled="True" Margin="0,0,0,2" ValueChanged="LoopSlider_ValueChanged"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- EXIT -->
+                            <Button Click="BtnExit_Click" Template="{StaticResource PillBtn}" HorizontalAlignment="Left" Padding="32,10">
+                                <TextBlock Text="EXIT" Foreground="White" FontSize="11" FontWeight="SemiBold"/>
+                            </Button>
+
+                        </StackPanel>
+
+                        <!-- INSTANT LEE PANEL -->
+                        <StackPanel x:Name="PanelInstantLee" Visibility="Collapsed" Margin="38,30,38,34">
+                            <TextBlock Text="INSTANT LEE" Foreground="White" FontSize="22" FontWeight="Bold" FontFamily="Segoe UI"/>
+                            <TextBlock Text="Camera flick combo with return" Foreground="#FF333333" FontSize="12" FontFamily="Segoe UI" Margin="0,5,0,0"/>
+                            <Border Background="#FF151515" Height="1" Margin="0,22,0,22"/>
+
+                            <TextBlock Text="MACRO" Foreground="#FF222222" FontSize="9.5" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,12"/>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Enable / Disable" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="ILMacroEnabledText" Text="Status: OFF" Foreground="#FF333333" FontSize="11" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="ILToggleSwitch" Grid.Column="1" VerticalAlignment="Center"
+                                              Style="{StaticResource ToggleSwitch}"
+                                              Checked="ILToggle_Checked" Unchecked="ILToggle_Unchecked"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Combo Key" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="ILComboKeyDisplay" Text="E" Foreground="#FF333333" FontSize="11" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+                                    </StackPanel>
+                                    <Button x:Name="BtnILSetComboKey" Grid.Column="1" VerticalAlignment="Center" Click="BtnILSetComboKey_Click" Template="{StaticResource PillBtn}">
+                                        <TextBlock Text="SET" FontSize="10" FontWeight="SemiBold"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+
+                            <TextBlock Text="PARAMETERS" Foreground="#FF222222" FontSize="9.5" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,12"/>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <TextBlock Text="Sensitivity" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="ILSensValue" Text="0.52" Foreground="#FF444444" FontSize="14" FontWeight="Bold" FontFamily="Segoe UI" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                    <Slider x:Name="ILSensSlider" Minimum="0.1" Maximum="2.0" Value="0.52" TickFrequency="0.01" IsSnapToTickEnabled="True" Margin="0,0,0,2" ValueChanged="ILSensSlider_ValueChanged"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <TextBlock Text="Steps" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="ILStepsValue" Text="5" Foreground="#FF444444" FontSize="14" FontWeight="Bold" FontFamily="Segoe UI" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                    <Slider x:Name="ILStepsSlider" Minimum="1" Maximum="10" Value="5" TickFrequency="1" IsSnapToTickEnabled="True" Margin="0,0,0,2" ValueChanged="ILStepsSlider_ValueChanged"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,22" BorderBrush="#161616" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="Flick Type" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI" Margin="0,0,0,10"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border x:Name="ILFlickCurvedBtn" Background="#1A1A1A" CornerRadius="10" Padding="20,8" Margin="0,0,8,0" Cursor="Hand"
+                                                BorderBrush="White" BorderThickness="1" MouseLeftButtonUp="ILFlickCurved_Click">
+                                            <TextBlock Text="Curved" Foreground="White" FontSize="12" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="ILFlickLinearBtn" Background="Transparent" CornerRadius="10" Padding="20,8" Cursor="Hand"
+                                                BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="ILFlickLinear_Click">
+                                            <TextBlock Text="Linear" Foreground="#FF555555" FontSize="12" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <Button Click="BtnExit_Click" Template="{StaticResource PillBtn}" HorizontalAlignment="Left" Padding="32,10">
+                                <TextBlock Text="EXIT" Foreground="White" FontSize="11" FontWeight="SemiBold"/>
+                            </Button>
+                        </StackPanel>
+
+                        <!-- LETHAL DASH PANEL -->
+                        <StackPanel x:Name="PanelLethalDash" Visibility="Collapsed" Margin="38,30,38,34">
+                            <TextBlock Text="LETHAL DASH" Foreground="White" FontSize="22" FontWeight="Bold" FontFamily="Segoe UI"/>
+                            <TextBlock Text="Dash with jump and flick" Foreground="#FF333333" FontSize="12" FontFamily="Segoe UI" Margin="0,5,0,0"/>
+                            <Border Background="#FF151515" Height="1" Margin="0,22,0,22"/>
+
+                            <TextBlock Text="MACRO" Foreground="#FF222222" FontSize="9.5" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,12"/>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Enable / Disable" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="LDMacroEnabledText" Text="Status: OFF" Foreground="#FF333333" FontSize="11" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="LDToggleSwitch" Grid.Column="1" VerticalAlignment="Center"
+                                              Style="{StaticResource ToggleSwitch}"
+                                              Checked="LDToggle_Checked" Unchecked="LDToggle_Unchecked"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Combo Key" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="LDComboKeyDisplay" Text="E" Foreground="#FF333333" FontSize="11" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+                                    </StackPanel>
+                                    <Button x:Name="BtnLDSetComboKey" Grid.Column="1" VerticalAlignment="Center" Click="BtnLDSetComboKey_Click" Template="{StaticResource PillBtn}">
+                                        <TextBlock Text="SET" FontSize="10" FontWeight="SemiBold"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+
+                            <TextBlock Text="PARAMETERS" Foreground="#FF222222" FontSize="9.5" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,12"/>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <TextBlock Text="Sensitivity" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="LDSensValue" Text="0.52" Foreground="#FF444444" FontSize="14" FontWeight="Bold" FontFamily="Segoe UI" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                    <Slider x:Name="LDSensSlider" Minimum="0.1" Maximum="2.0" Value="0.52" TickFrequency="0.01" IsSnapToTickEnabled="True" Margin="0,0,0,2" ValueChanged="LDSensSlider_ValueChanged"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <TextBlock Text="Steps" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="LDStepsValue" Text="6" Foreground="#FF444444" FontSize="14" FontWeight="Bold" FontFamily="Segoe UI" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                    <Slider x:Name="LDStepsSlider" Minimum="1" Maximum="50" Value="6" TickFrequency="1" IsSnapToTickEnabled="True" Margin="0,0,0,2" ValueChanged="LDStepsSlider_ValueChanged"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <TextBlock Text="Key Delay (ms)" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="LDDelayValue" Text="120" Foreground="#FF444444" FontSize="14" FontWeight="Bold" FontFamily="Segoe UI" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                    <Slider x:Name="LDDelaySlider" Minimum="0" Maximum="300" Value="120" TickFrequency="5" IsSnapToTickEnabled="True" Margin="0,0,0,2" ValueChanged="LDDelaySlider_ValueChanged"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,22" BorderBrush="#161616" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="Flick Type" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI" Margin="0,0,0,10"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border x:Name="LDFlickLinearBtn" Background="#1A1A1A" CornerRadius="10" Padding="20,8" Margin="0,0,8,0" Cursor="Hand"
+                                                BorderBrush="White" BorderThickness="1" MouseLeftButtonUp="LDFlickLinear_Click">
+                                            <TextBlock Text="Linear" Foreground="White" FontSize="12" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="LDFlickCurvedBtn" Background="Transparent" CornerRadius="10" Padding="20,8" Cursor="Hand"
+                                                BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="LDFlickCurved_Click">
+                                            <TextBlock Text="Curved" Foreground="#FF555555" FontSize="12" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <Button Click="BtnExit_Click" Template="{StaticResource PillBtn}" HorizontalAlignment="Left" Padding="32,10">
+                                <TextBlock Text="EXIT" Foreground="White" FontSize="11" FontWeight="SemiBold"/>
+                            </Button>
+                        </StackPanel>
+
+                        <!-- BUNNY HOP PANEL -->
+                        <StackPanel x:Name="PanelBunnyHop" Visibility="Collapsed" Margin="38,30,38,34">
+                            <TextBlock Text="BUNNY HOP" Foreground="White" FontSize="22" FontWeight="Bold" FontFamily="Segoe UI"/>
+                            <TextBlock Text="Rivals auto bunny hop" Foreground="#FF333333" FontSize="12" FontFamily="Segoe UI" Margin="0,5,0,0"/>
+                            <Border Background="#FF151515" Height="1" Margin="0,22,0,22"/>
+
+                            <TextBlock Text="MACRO" Foreground="#FF222222" FontSize="9.5" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,12"/>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Enable / Disable" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="BHMacroEnabledText" Text="Status: OFF" Foreground="#FF333333" FontSize="11" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="BHToggleSwitch" Grid.Column="1" VerticalAlignment="Center"
+                                              Style="{StaticResource ToggleSwitch}"
+                                              Checked="BHToggle_Checked" Unchecked="BHToggle_Unchecked"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,22" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Hold Key" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="BHComboKeyDisplay" Text="B" Foreground="#FF333333" FontSize="11" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+                                    </StackPanel>
+                                    <Button x:Name="BtnBHSetComboKey" Grid.Column="1" VerticalAlignment="Center" Click="BtnBHSetComboKey_Click" Template="{StaticResource PillBtn}">
+                                        <TextBlock Text="SET" FontSize="10" FontWeight="SemiBold"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+
+                            <Button Click="BtnExit_Click" Template="{StaticResource PillBtn}" HorizontalAlignment="Left" Padding="32,10">
+                                <TextBlock Text="EXIT" Foreground="White" FontSize="11" FontWeight="SemiBold"/>
+                            </Button>
+                        </StackPanel>
+
+                        
+                        <!-- AUTOCLICKER PANEL -->
+                        <StackPanel x:Name="PanelAutoClicker" Visibility="Collapsed" Margin="38,30,38,34">
+                            <TextBlock Text="AUTOCLICKER" Foreground="White" FontSize="22" FontWeight="Bold" FontFamily="Segoe UI"/>
+                            <TextBlock Text="Universal ultra-fast clicker (up to 1000 CPS)" Foreground="#FF333333" FontSize="12" FontFamily="Segoe UI" Margin="0,5,0,0"/>
+                            <Border Background="#FF151515" Height="1" Margin="0,22,0,22"/>
+
+                            <TextBlock Text="MACRO" Foreground="#FF222222" FontSize="9.5" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,12"/>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Enable / Disable" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="ACMacroEnabledText" Text="Status: OFF" Foreground="#FF333333" FontSize="11" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="ACToggleSwitch" Grid.Column="1" VerticalAlignment="Center"
+                                              Style="{StaticResource ToggleSwitch}"
+                                              Checked="ACToggle_Checked" Unchecked="ACToggle_Unchecked"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,22" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Hold Key" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="ACComboKeyDisplay" Text="NONE" Foreground="#FF333333" FontSize="11" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+                                    </StackPanel>
+                                    <Button x:Name="BtnACSetKey" Grid.Column="1" VerticalAlignment="Center" Click="BtnACSetKey_Click" Template="{StaticResource PillBtn}">
+                                        <TextBlock Text="SET" FontSize="10" FontWeight="SemiBold"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+
+                            <TextBlock Text="PARAMETERS" Foreground="#FF222222" FontSize="9.5" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,12"/>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,22" BorderBrush="#161616" BorderThickness="1">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <TextBlock Text="Clicks Per Second (CPS)" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="ACCPSValue" Text="10" Foreground="#FF444444" FontSize="14" FontWeight="Bold" FontFamily="Segoe UI" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                    <Slider x:Name="ACCPSSlider" Minimum="1" Maximum="1000" Value="10" TickFrequency="1" IsSnapToTickEnabled="True" Margin="0,0,0,2" ValueChanged="ACCPSSlider_ValueChanged"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Button Click="BtnExit_Click" Template="{StaticResource PillBtn}" HorizontalAlignment="Left" Padding="32,10">
+                                <TextBlock Text="EXIT" Foreground="White" FontSize="11" FontWeight="SemiBold"/>
+                            </Button>
+                        </StackPanel>
+
+                        <!-- AUTOJUMP PANEL -->
+                        <StackPanel x:Name="PanelAutoJump" Visibility="Collapsed" Margin="38,30,38,34">
+                            <TextBlock Text="AUTOJUMP" Foreground="White" FontSize="22" FontWeight="Bold" FontFamily="Segoe UI"/>
+                            <TextBlock Text="Universal bhop / autojump" Foreground="#FF333333" FontSize="12" FontFamily="Segoe UI" Margin="0,5,0,0"/>
+                            <Border Background="#FF151515" Height="1" Margin="0,22,0,22"/>
+
+                            <TextBlock Text="MACRO" Foreground="#FF222222" FontSize="9.5" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,12"/>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Enable / Disable" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="AJMacroEnabledText" Text="Status: OFF" Foreground="#FF333333" FontSize="11" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="AJToggleSwitch" Grid.Column="1" VerticalAlignment="Center"
+                                              Style="{StaticResource ToggleSwitch}"
+                                              Checked="AJToggle_Checked" Unchecked="AJToggle_Unchecked"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,22" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Hold Key" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="AJComboKeyDisplay" Text="SPACE" Foreground="#FF333333" FontSize="11" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+                                    </StackPanel>
+                                    <Button x:Name="BtnAJSetKey" Grid.Column="1" VerticalAlignment="Center" Click="BtnAJSetKey_Click" Template="{StaticResource PillBtn}">
+                                        <TextBlock Text="SET" FontSize="10" FontWeight="SemiBold"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+
+                            <TextBlock Text="PARAMETERS" Foreground="#FF222222" FontSize="9.5" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,12"/>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,22" BorderBrush="#161616" BorderThickness="1">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <TextBlock Text="Jump Delay (ms)" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="AJDelayValue" Text="10" Foreground="#FF444444" FontSize="14" FontWeight="Bold" FontFamily="Segoe UI" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                    <Slider x:Name="AJDelaySlider" Minimum="1" Maximum="1000" Value="10" TickFrequency="1" IsSnapToTickEnabled="True" Margin="0,0,0,2" ValueChanged="AJDelaySlider_ValueChanged"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Button Click="BtnExit_Click" Template="{StaticResource PillBtn}" HorizontalAlignment="Left" Padding="32,10">
+                                <TextBlock Text="EXIT" Foreground="White" FontSize="11" FontWeight="SemiBold"/>
+                            </Button>
+                        </StackPanel>
+    
+                        <!-- PILLAR SLIDE PANEL -->
+                        <StackPanel x:Name="PanelPillarSlide" Visibility="Collapsed" Margin="38,30,38,34">
+                            <TextBlock Text="PILLAR SLIDE" Foreground="White" FontSize="22" FontWeight="Bold" FontFamily="Segoe UI"/>
+                            <TextBlock Text="Rivals pillar slide fix" Foreground="#FF333333" FontSize="12" FontFamily="Segoe UI" Margin="0,5,0,0"/>
+                            <Border Background="#FF151515" Height="1" Margin="0,22,0,22"/>
+
+                            <TextBlock Text="MACRO" Foreground="#FF222222" FontSize="9.5" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,12"/>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Enable / Disable" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="PSMacroEnabledText" Text="Status: OFF" Foreground="#FF333333" FontSize="11" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="PSToggleSwitch" Grid.Column="1" VerticalAlignment="Center"
+                                              Style="{StaticResource ToggleSwitch}"
+                                              Checked="PSToggle_Checked" Unchecked="PSToggle_Unchecked"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Forward Slide Key" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="PSForwardKeyDisplay" Text="B" Foreground="#FF333333" FontSize="11" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+                                    </StackPanel>
+                                    <Button x:Name="BtnPSSetForwardKey" Grid.Column="1" VerticalAlignment="Center" Click="BtnPSSetForwardKey_Click" Template="{StaticResource PillBtn}">
+                                        <TextBlock Text="SET" FontSize="10" FontWeight="SemiBold"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,22" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Backward Slide Key" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="PSBackwardKeyDisplay" Text="N" Foreground="#FF333333" FontSize="11" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+                                    </StackPanel>
+                                    <Button x:Name="BtnPSSetBackwardKey" Grid.Column="1" VerticalAlignment="Center" Click="BtnPSSetBackwardKey_Click" Template="{StaticResource PillBtn}">
+                                        <TextBlock Text="SET" FontSize="10" FontWeight="SemiBold"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+
+                            <Button Click="BtnExit_Click" Template="{StaticResource PillBtn}" HorizontalAlignment="Left" Padding="32,10">
+                                <TextBlock Text="EXIT" Foreground="White" FontSize="11" FontWeight="SemiBold"/>
+                            </Button>
+                        </StackPanel>
+
+                        <!-- AUTO COMBO PANEL -->
+                        <StackPanel x:Name="PanelAutoCombo" Visibility="Collapsed" Margin="38,30,38,34">
+                            <TextBlock Text="AUTO COMBO" Foreground="White" FontSize="22" FontWeight="Bold" FontFamily="Segoe UI"/>
+                            <TextBlock Text="Blox Fruits PVP combo automator" Foreground="#FF333333" FontSize="12" FontFamily="Segoe UI" Margin="0,5,0,0"/>
+                            <Border Background="#FF151515" Height="1" Margin="0,22,0,22"/>
+
+                            <TextBlock Text="MACRO" Foreground="#FF222222" FontSize="9.5" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,12"/>
+
+                            <!-- Enable / Activate Key -->
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Enable / Disable" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="CBMacroEnabledText" Text="Status: OFF" Foreground="#FF333333" FontSize="11" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="CBToggleSwitch" Grid.Column="1" VerticalAlignment="Center"
+                                              Style="{StaticResource ToggleSwitch}"
+                                              Checked="CBToggle_Checked" Unchecked="CBToggle_Unchecked"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,22" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Activate Key" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="CBKeyDisplay" Text="B" Foreground="#FF333333" FontSize="11" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+                                    </StackPanel>
+                                    <Button x:Name="BtnCBSetKey" Grid.Column="1" VerticalAlignment="Center" Click="BtnCBSetKey_Click" Template="{StaticResource PillBtn}">
+                                        <TextBlock Text="SET" FontSize="10" FontWeight="SemiBold"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+
+                            <TextBlock Text="COMBO ORDER &amp; KEYS" Foreground="#FF222222" FontSize="9.5" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,12"/>
+
+                            <!-- Combo keys chooser -->
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="Choose the key for each category (press order = top to bottom)" Foreground="#FF444444" FontSize="11" FontFamily="Segoe UI" Margin="0,0,0,16" TextWrapping="Wrap"/>
+                                    <Grid Margin="0,0,0,14">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Melee" Foreground="White" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                        <WrapPanel Grid.Column="1">
+                                        <Border x:Name="CBMeleeBtnZ" Background="#1A1A1A" BorderBrush="White" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBMelee_z_Click">
+                                            <TextBlock Text="Z" Foreground="White" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBMeleeBtnX" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBMelee_x_Click">
+                                            <TextBlock Text="X" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBMeleeBtnC" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBMelee_c_Click">
+                                            <TextBlock Text="C" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBMeleeBtnV" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBMelee_v_Click">
+                                            <TextBlock Text="V" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBMeleeBtnF" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBMelee_f_Click">
+                                            <TextBlock Text="F" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBMeleeBtnNONE" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBMelee_none_Click">
+                                            <TextBlock Text="—" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        </WrapPanel>
+                                    </Grid>
+                                    <Grid Margin="0,0,0,14">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Fruta" Foreground="White" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                        <WrapPanel Grid.Column="1">
+                                        <Border x:Name="CBFrutaBtnZ" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBFruta_z_Click">
+                                            <TextBlock Text="Z" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBFrutaBtnX" Background="#1A1A1A" BorderBrush="White" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBFruta_x_Click">
+                                            <TextBlock Text="X" Foreground="White" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBFrutaBtnC" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBFruta_c_Click">
+                                            <TextBlock Text="C" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBFrutaBtnV" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBFruta_v_Click">
+                                            <TextBlock Text="V" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBFrutaBtnF" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBFruta_f_Click">
+                                            <TextBlock Text="F" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBFrutaBtnNONE" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBFruta_none_Click">
+                                            <TextBlock Text="—" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        </WrapPanel>
+                                    </Grid>
+                                    <Grid Margin="0,0,0,14">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Espada" Foreground="White" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                        <WrapPanel Grid.Column="1">
+                                        <Border x:Name="CBEspadaBtnZ" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBEspada_z_Click">
+                                            <TextBlock Text="Z" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBEspadaBtnX" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBEspada_x_Click">
+                                            <TextBlock Text="X" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBEspadaBtnC" Background="#1A1A1A" BorderBrush="White" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBEspada_c_Click">
+                                            <TextBlock Text="C" Foreground="White" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBEspadaBtnV" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBEspada_v_Click">
+                                            <TextBlock Text="V" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBEspadaBtnF" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBEspada_f_Click">
+                                            <TextBlock Text="F" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBEspadaBtnNONE" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBEspada_none_Click">
+                                            <TextBlock Text="—" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        </WrapPanel>
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Gun" Foreground="White" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                        <WrapPanel Grid.Column="1">
+                                        <Border x:Name="CBGunBtnZ" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBGun_z_Click">
+                                            <TextBlock Text="Z" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBGunBtnX" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBGun_x_Click">
+                                            <TextBlock Text="X" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBGunBtnC" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBGun_c_Click">
+                                            <TextBlock Text="C" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBGunBtnV" Background="#1A1A1A" BorderBrush="White" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBGun_v_Click">
+                                            <TextBlock Text="V" Foreground="White" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBGunBtnF" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBGun_f_Click">
+                                            <TextBlock Text="F" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        <Border x:Name="CBGunBtnNONE" Background="Transparent" BorderBrush="#222222" CornerRadius="8" Padding="14,7" Margin="0,0,6,0" Cursor="Hand"
+                                                BorderThickness="1" MouseLeftButtonUp="CBGun_none_Click">
+                                            <TextBlock Text="—" Foreground="#FF555555" FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                        </WrapPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <TextBlock Text="HOTBAR SLOTS" Foreground="#FF222222" FontSize="9.5" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,12"/>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,22" BorderBrush="#161616" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="Which slot number corresponds to each category" Foreground="#FF444444" FontSize="11" FontFamily="Segoe UI" Margin="0,0,0,16" TextWrapping="Wrap"/>
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                        <TextBlock Text="Melee Slot" Foreground="White" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Button Content="-" Template="{StaticResource PillBtn}" Padding="12,6" Click="CBMeleeSlotDown_Click"/>
+                                            <TextBlock x:Name="CBMeleeSlotText" Text="1" Foreground="White" FontSize="16" FontWeight="Bold" Margin="14,0" VerticalAlignment="Center"/>
+                                            <Button Content="+" Template="{StaticResource PillBtn}" Padding="12,6" Click="CBMeleeSlotUp_Click"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                        <TextBlock Text="Fruta Slot" Foreground="White" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Button Content="-" Template="{StaticResource PillBtn}" Padding="12,6" Click="CBFrutaSlotDown_Click"/>
+                                            <TextBlock x:Name="CBFrutaSlotText" Text="2" Foreground="White" FontSize="16" FontWeight="Bold" Margin="14,0" VerticalAlignment="Center"/>
+                                            <Button Content="+" Template="{StaticResource PillBtn}" Padding="12,6" Click="CBFrutaSlotUp_Click"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                        <TextBlock Text="Espada Slot" Foreground="White" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Button Content="-" Template="{StaticResource PillBtn}" Padding="12,6" Click="CBEspadaSlotDown_Click"/>
+                                            <TextBlock x:Name="CBEspadaSlotText" Text="3" Foreground="White" FontSize="16" FontWeight="Bold" Margin="14,0" VerticalAlignment="Center"/>
+                                            <Button Content="+" Template="{StaticResource PillBtn}" Padding="12,6" Click="CBEspadaSlotUp_Click"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                        <TextBlock Text="Gun Slot" Foreground="White" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Button Content="-" Template="{StaticResource PillBtn}" Padding="12,6" Click="CBGunSlotDown_Click"/>
+                                            <TextBlock x:Name="CBGunSlotText" Text="4" Foreground="White" FontSize="16" FontWeight="Bold" Margin="14,0" VerticalAlignment="Center"/>
+                                            <Button Content="+" Template="{StaticResource PillBtn}" Padding="12,6" Click="CBGunSlotUp_Click"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <Button Click="BtnExit_Click" Template="{StaticResource PillBtn}" HorizontalAlignment="Left" Padding="32,10">
+                                <TextBlock Text="EXIT" Foreground="White" FontSize="11" FontWeight="SemiBold"/>
+                            </Button>
+                        </StackPanel>
+
+                        <!-- FOV CHANGER PANEL -->
+                        <StackPanel x:Name="PanelFOVChanger" Visibility="Collapsed" Margin="38,30,38,34">
+                            <TextBlock Text="FOV CHANGER" Foreground="White" FontSize="22" FontWeight="Bold" FontFamily="Segoe UI"/>
+                            <TextBlock Text="Field of View modifier for Blox Fruits" Foreground="#FF333333" FontSize="12" FontFamily="Segoe UI" Margin="0,5,0,0"/>
+                            <Border Background="#FF151515" Height="1" Margin="0,22,0,22"/>
+
+                            <TextBlock Text="FIELD OF VIEW" Foreground="#FF222222" FontSize="9.5" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,12"/>
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,18" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Enable FOV Changer" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock x:Name="FOVEnabledText" Text="Status: OFF" Foreground="#FF333333" FontSize="11" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="FOVToggleSwitch" Grid.Column="1" VerticalAlignment="Center"
+                                              Style="{StaticResource ToggleSwitch}"
+                                              Checked="FOVToggle_Checked" Unchecked="FOVToggle_Unchecked"/>
+                                </Grid>
+                            </Border>
+
+
+                            <Border Background="#0E0E0E" CornerRadius="16" Padding="22,22" Margin="0,0,0,10" BorderBrush="#161616" BorderThickness="1">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,6">
+                                        <StackPanel>
+                                            <TextBlock Text="Field of View" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                            <TextBlock Text="70 = default  |  120 = maximum" Foreground="#FF2A2A2A" FontSize="10" FontFamily="Segoe UI" Margin="0,3,0,0"/>
+                                        </StackPanel>
+                                        <Border HorizontalAlignment="Right" VerticalAlignment="Center" Background="#111111" CornerRadius="10" Padding="14,6" BorderBrush="#1A1A1A" BorderThickness="1">
+                                            <TextBlock x:Name="FOVValueDisplay" Text="70.0" Foreground="White" FontSize="18" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                        </Border>
+                                    </Grid>
+                                    <Slider x:Name="FOVSlider" Minimum="70" Maximum="120" Value="70" TickFrequency="0.5" IsSnapToTickEnabled="True" Margin="0,8,0,0" ValueChanged="FOVSlider_ValueChanged"/>
+                                    <Grid Margin="0,4,0,0">
+                                        <TextBlock Text="70" Foreground="#FF2A2A2A" FontSize="9" FontFamily="Segoe UI"/>
+                                        <TextBlock Text="120" Foreground="#FF2A2A2A" FontSize="9" FontFamily="Segoe UI" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            
+
+                            <Button Click="BtnExit_Click" Template="{StaticResource PillBtn}" HorizontalAlignment="Left" Padding="32,10">
+                                <TextBlock Text="EXIT" Foreground="White" FontSize="11" FontWeight="SemiBold"/>
+                            </Button>
+                        </StackPanel>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Grid>
+
+            <!-- ═══ MODAL ═══ -->
+            <Border x:Name="Overlay" Grid.Row="0" Grid.RowSpan="2" Background="#CC000000"
+                    Visibility="Collapsed" MouseLeftButtonUp="Overlay_Click">
+                <Border x:Name="HotkeyModal" Width="360" CornerRadius="20"
+                        Background="#0C0C0C" BorderBrush="#181818" BorderThickness="1"
+                        HorizontalAlignment="Center" VerticalAlignment="Center">
+                    
+                    <StackPanel Margin="30,30,30,26">
+                        <TextBlock x:Name="ModalTitle" Text="Set Hotkey" Foreground="White" FontSize="18" FontWeight="Bold" FontFamily="Segoe UI"/>
+                        <TextBlock x:Name="ModalInstruction" Text="Press any key..." Foreground="#FF333333" FontSize="12" Margin="0,8,0,0" FontFamily="Segoe UI"/>
+                        <Button Content="Cancel" Template="{StaticResource PillBtn}" HorizontalAlignment="Right" Margin="0,26,0,0" Padding="24,9" Click="ModalCancel_Click"/>
+                    </StackPanel>
+                </Border>
+            </Border>
+        
+        <!-- SETTINGS OVERLAY -->
+        <Grid x:Name="SettingsOverlay" Grid.RowSpan="2" Background="#99000000" Visibility="Collapsed" Panel.ZIndex="100">
+            <Border Width="540" Height="500" CornerRadius="20" Background="#0A0A0A" BorderBrush="#161616" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid Margin="30">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Text="Settings" Foreground="White" FontSize="22" FontWeight="Bold" FontFamily="Segoe UI"/>
+                    
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
+                        <StackPanel>
+                            <Border Background="#111111" CornerRadius="12" Padding="16" Margin="0,0,0,10" BorderBrush="#1A1A1A" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Potato Mode" Foreground="White" FontSize="14" FontWeight="SemiBold"/>
+                                        <TextBlock Text="Disables animations to reduce lag" Foreground="#FF555555" FontSize="11" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="ChkPotatoMode" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource ToggleSwitch}" Checked="ChkPotatoMode_Checked" Unchecked="ChkPotatoMode_Unchecked"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="#111111" CornerRadius="12" Padding="16" Margin="0,0,0,10" BorderBrush="#1A1A1A" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Always on Top" Foreground="White" FontSize="14" FontWeight="SemiBold"/>
+                                        <TextBlock Text="Keeps the app over other windows" Foreground="#FF555555" FontSize="11" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="ChkTopMost" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource ToggleSwitch}" Checked="ChkTopMost_Checked" Unchecked="ChkTopMost_Unchecked"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="#111111" CornerRadius="12" Padding="16" Margin="0,0,0,10" BorderBrush="#1A1A1A" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Notifications" Foreground="White" FontSize="14" FontWeight="SemiBold"/>
+                                        <TextBlock Text="Show UI popups for macros" Foreground="#FF555555" FontSize="11" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="ChkNotifications" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource ToggleSwitch}" Checked="ChkNotifications_Checked" Unchecked="ChkNotifications_Unchecked"/>
+                                </Grid>
+                            </Border>
+
+                            <TextBlock Text="THEMES" Foreground="#FF333333" FontSize="10" FontWeight="Bold" Margin="0,14,0,10"/>
+
+                            <Border Background="#111111" CornerRadius="12" Padding="16" Margin="0,0,0,10" BorderBrush="#1A1A1A" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="Static Theme" Foreground="White" FontSize="13" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                                    <WrapPanel x:Name="StaticThemePanel">
+                                <Border x:Name="StaticThemeTile0" Tag="0" Background="#080808" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Default" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile1" Tag="1" Background="#0A0A14" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Midnight" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile2" Tag="2" Background="#141414" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Charcoal" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile3" Tag="3" Background="#1C1C1C" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Graphite" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile4" Tag="4" Background="#1A1A2E" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Slate" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile5" Tag="5" Background="#0D1B2A" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Navy" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile6" Tag="6" Background="#0A1F0A" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Forest" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile7" Tag="7" Background="#1A0A0A" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Wine" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile8" Tag="8" Background="#12001A" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Deep Purple" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile9" Tag="9" Background="#001A1A" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Teal Dark" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile10" Tag="10" Background="#001428" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Ocean" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile11" Tag="11" Background="#1F0000" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Blood" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile12" Tag="12" Background="#141A00" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Olive" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile13" Tag="13" Background="#1A1400" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Gold Dark" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile14" Tag="14" Background="#0E0E18" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Storm" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile15" Tag="15" Background="#0A1218" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Ice" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile16" Tag="16" Background="#180800" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Ember" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile17" Tag="17" Background="#0A150A" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Moss" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile18" Tag="18" Background="#100018" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Violet" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile19" Tag="19" Background="#14100A" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Dusk" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile20" Tag="20" Background="#111111" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Chrome" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile21" Tag="21" Background="#0C0C0C" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Ash" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="StaticThemeTile22" Tag="22" Background="#000000" CornerRadius="8" Width="70" Height="48" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#333333" BorderThickness="1" MouseLeftButtonUp="StaticThemeTile_Click">
+                                    <TextBlock Text="Void" Foreground="White" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="4,0,4,4" FontFamily="Segoe UI"/>
+                                </Border>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Background="#111111" CornerRadius="12" Padding="16" Margin="0,0,0,10" BorderBrush="#1A1A1A" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="Animated Theme" Foreground="White" FontSize="13" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                                    <WrapPanel x:Name="AnimThemePanel">
+                                <Border x:Name="AnimThemeTile0" Tag="0" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="None" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile1" Tag="1" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Matrix Rain" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile2" Tag="2" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Starfield" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile3" Tag="3" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Fire Embers" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile4" Tag="4" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Neon Pulse" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile5" Tag="5" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Aurora" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile6" Tag="6" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Plasma" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile7" Tag="7" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Circuit" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile8" Tag="8" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Galaxy Drift" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile9" Tag="9" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Thunder" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile10" Tag="10" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Water Ripple" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile11" Tag="11" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Sand Storm" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile12" Tag="12" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Snow Fall" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile13" Tag="13" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Smoke" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile14" Tag="14" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Laser Grid" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile15" Tag="15" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Hex Grid" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile16" Tag="16" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="DNA Helix" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile17" Tag="17" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Solar Flare" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile18" Tag="18" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Void Warp" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile19" Tag="19" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Cyber Lines" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile20" Tag="20" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Pixel Rain" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile21" Tag="21" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Wave Form" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile22" Tag="22" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Orbit" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile23" Tag="23" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Spores" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                <Border x:Name="AnimThemeTile24" Tag="24" Background="Transparent" CornerRadius="8" Padding="12,7" Margin="0,0,6,6" Cursor="Hand" BorderBrush="#222222" BorderThickness="1" MouseLeftButtonUp="AnimThemeTile_Click">
+                                    <TextBlock Text="Static Noise" Foreground="#FF555555" FontSize="10" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                </Border>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <Button Grid.Row="2" Content="Close" Template="{StaticResource PillBtn}" HorizontalAlignment="Right" Padding="24,10" Margin="0,16,0,0" Click="BtnSettingsClose_Click"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ABOUT OVERLAY -->
+        <Grid x:Name="AboutOverlay" Grid.RowSpan="2" Background="#B2000000" Visibility="Collapsed" Panel.ZIndex="110">
+            <Border Width="640" MaxHeight="560" CornerRadius="20" Background="#0A0A0A" BorderBrush="#161616" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid Margin="30">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Header -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                        <Border Width="52" Height="52" CornerRadius="14" Background="#111" BorderBrush="#1A1A1A" BorderThickness="1" VerticalAlignment="Center">
+                            <TextBlock Text="L" Foreground="White" FontSize="28" FontWeight="Bold" FontFamily="Segoe UI" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Margin="16,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="Leitostrap Macro" Foreground="White" FontSize="22" FontWeight="Bold" FontFamily="Segoe UI"/>
+                            <TextBlock Text="V1.0.0 Beta" Foreground="#FF444444" FontSize="12" FontFamily="Segoe UI" Margin="0,3,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Scrollable content -->
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="380">
+                        <StackPanel>
+                            <!-- Features -->
+                            <TextBlock Text="FEATURES" Foreground="#FF333333" FontSize="10" FontWeight="Bold" Margin="0,0,0,10"/>
+                            <Border Background="#111111" CornerRadius="12" Padding="16" Margin="0,0,0,20" BorderBrush="#1A1A1A" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="&#xE72A;  The Strongest Battlegrounds — Humbled Twisted, Instant Lee, Lethal Dash" Foreground="White" FontSize="11" FontFamily="Segoe UI" Margin="0,0,0,6" TextWrapping="Wrap"/>
+                                    <TextBlock Text="&#xE72A;  Rivals — Bunny Hop, Pillar Slide" Foreground="White" FontSize="11" FontFamily="Segoe UI" Margin="0,0,0,6" TextWrapping="Wrap"/>
+                                    <TextBlock Text="&#xE72A;  Blox Fruits — Auto Combo (PVP), FOV Changer (up to 120)" Foreground="White" FontSize="11" FontFamily="Segoe UI" Margin="0,0,0,6" TextWrapping="Wrap"/>
+                                    <TextBlock Text="&#xE72A;  Universal — AutoClicker (up to 1000 CPS), AutoJump" Foreground="White" FontSize="11" FontFamily="Segoe UI" Margin="0,0,0,6" TextWrapping="Wrap"/>
+                                    <TextBlock Text="&#xE72A;  23 Static Themes + 25 Animated Themes" Foreground="White" FontSize="11" FontFamily="Segoe UI" Margin="0,0,0,6" TextWrapping="Wrap"/>
+                                    <TextBlock Text="&#xE72A;  Potato Mode, Always on Top, Notification toggles" Foreground="White" FontSize="11" FontFamily="Segoe UI" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Team -->
+                            <TextBlock Text="TEAM" Foreground="#FF333333" FontSize="10" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                            <!-- Owner card -->
+                            <Border Background="#111111" CornerRadius="12" Padding="14" Margin="0,0,0,8" BorderBrush="#1A1A1A" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Width="42" Height="42" CornerRadius="21" ClipToBounds="True" Background="#222">
+                                        <Image x:Name="AvatarLeito" Width="42" Height="42" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="Leito" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock Text="Owner" Foreground="#FF444444" FontSize="11" FontFamily="Segoe UI" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                    <Border Grid.Column="2" Background="#1A1A1A" CornerRadius="8" Padding="10,4" VerticalAlignment="Center">
+                                        <TextBlock Text="OWNER" Foreground="#FF777777" FontSize="9" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <!-- Dev cards -->
+                            <Border Background="#0E0E0E" CornerRadius="12" Padding="14" Margin="0,0,0,6" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <Border Width="38" Height="38" CornerRadius="19" ClipToBounds="True" Background="#222">
+                                        <Image x:Name="AvatarDem" Width="38" Height="38" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="Dem" Foreground="White" FontSize="13" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock Text="Developer" Foreground="#FF444444" FontSize="10" FontFamily="Segoe UI" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                    <Border Grid.Column="2" Background="#1A1A1A" CornerRadius="8" Padding="8,3" VerticalAlignment="Center">
+                                        <TextBlock Text="DEV" Foreground="#FF555555" FontSize="9" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                            <Border Background="#0E0E0E" CornerRadius="12" Padding="14" Margin="0,0,0,6" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <Border Width="38" Height="38" CornerRadius="19" ClipToBounds="True" Background="#222">
+                                        <Image x:Name="AvatarSword" Width="38" Height="38" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="Sword" Foreground="White" FontSize="13" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock Text="Developer" Foreground="#FF444444" FontSize="10" FontFamily="Segoe UI" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                    <Border Grid.Column="2" Background="#1A1A1A" CornerRadius="8" Padding="8,3" VerticalAlignment="Center">
+                                        <TextBlock Text="DEV" Foreground="#FF555555" FontSize="9" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                            <Border Background="#0E0E0E" CornerRadius="12" Padding="14" Margin="0,0,0,6" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <Border Width="38" Height="38" CornerRadius="19" ClipToBounds="True" Background="#222">
+                                        <Image x:Name="AvatarPepper" Width="38" Height="38" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="Pepper" Foreground="White" FontSize="13" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock Text="Developer" Foreground="#FF444444" FontSize="10" FontFamily="Segoe UI" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                    <Border Grid.Column="2" Background="#1A1A1A" CornerRadius="8" Padding="8,3" VerticalAlignment="Center">
+                                        <TextBlock Text="DEV" Foreground="#FF555555" FontSize="9" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                            <Border Background="#0E0E0E" CornerRadius="12" Padding="14" Margin="0,0,0,6" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <Border Width="38" Height="38" CornerRadius="19" ClipToBounds="True" Background="#222">
+                                        <Image x:Name="AvatarWinnie" Width="38" Height="38" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="Winnie" Foreground="White" FontSize="13" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock Text="Developer" Foreground="#FF444444" FontSize="10" FontFamily="Segoe UI" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                    <Border Grid.Column="2" Background="#1A1A1A" CornerRadius="8" Padding="8,3" VerticalAlignment="Center">
+                                        <TextBlock Text="DEV" Foreground="#FF555555" FontSize="9" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                            <Border Background="#0E0E0E" CornerRadius="12" Padding="14" Margin="0,0,0,6" BorderBrush="#161616" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <Border Width="38" Height="38" CornerRadius="19" ClipToBounds="True" Background="#222">
+                                        <Image x:Name="AvatarLean" Width="38" Height="38" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="Lean" Foreground="White" FontSize="13" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                        <TextBlock Text="Developer" Foreground="#FF444444" FontSize="10" FontFamily="Segoe UI" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                    <Border Grid.Column="2" Background="#1A1A1A" CornerRadius="8" Padding="8,3" VerticalAlignment="Center">
+                                        <TextBlock Text="DEV" Foreground="#FF555555" FontSize="9" FontWeight="Bold" FontFamily="Segoe UI"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <Button Grid.Row="2" Content="Close" Template="{StaticResource PillBtn}" HorizontalAlignment="Right" Padding="24,10" Margin="0,20,0,0" Click="BtnAboutClose_Click"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+    </Grid>
+    </Border>
+</Window>
