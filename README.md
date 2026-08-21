@@ -12,6 +12,8 @@
 
 <img src="LeitostrapMacroPreview.png" alt="Leitostrap Macro Preview" width="750"/>
 
+<div/>
+
 ---
 
 ## 📖 Overview
