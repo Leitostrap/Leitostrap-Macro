@@ -4,7 +4,7 @@
 
 <p><em>High-performance game macro utility for Roblox and Windows games — built for competitive players.</em></p>
 
-<img src="LeitostrapMacroPreview.png" alt="Leitostrap Macro Preview" width="750"/>
+
 
 <br/>
 
@@ -13,6 +13,8 @@
 ![Framework](https://img.shields.io/badge/.NET-6.0-white?style=for-the-badge&labelColor=111111)
 
 </div>
+
+<img src="LeitostrapMacroPreview.png" alt="Leitostrap Macro Preview" width="750"/>
 
 ---
 
