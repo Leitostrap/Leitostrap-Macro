@@ -10,10 +10,6 @@
 ![Platform](https://img.shields.io/badge/platform-Windows-white?style=for-the-badge&labelColor=111111)
 ![Framework](https://img.shields.io/badge/.NET-6.0-white?style=for-the-badge&labelColor=111111)
 
-</div>
-
-<br/>
-
 <img src="LeitostrapMacroPreview.png" alt="Leitostrap Macro Preview" width="750"/>
 
 ---
